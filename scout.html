@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
+  <link rel="icon" type="image/x-icon" href="media/1591 Logo.jpg">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="script.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>FRC scouting QR</h1>
+    <form id="data-form">
+      <h2>PREMATCH</h2>
+
+      <label for="scouterInitial">Scouter Initial</label>
+      <input type="string" id="scouterInitial">
+
+      <label for="match-number">Match Number:</label>
+      <input type="number" id="match-number" min="1" required />
+
+      <label for="robot-select">Robot:</label>
+      <select id="robot-select">
+        <option value="R1">Red 1</option>
+        <option value="R2">Red 2</option>
+        <option value="R3">Red 3</option>
+        <option value="B1">Blue 1</option>
+        <option value="B2">Blue 2</option>
+        <option value="B3">Blue 3</option>
+      </select>
+
+      <label for="teamNumber">Team Number: </label>
+      <input type="number" id="teamNumber" min="1" required />
+
+      <label for="startingPosition">Starting Position: </label>
+      <select id="startingPosition">
+        <option value="RB">RB</option>
+        <option value="BB">BB</option>
+        <option value="M">M</option>
+      </select>
+
+      <label for="noShow-toggle">No show?</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="noShow-toggle" class="toggle-checkbox" />
+        <label for="noShow-toggle" class="toggle-label"></label>
+      </div>
+
+      <h2>AUTONOMOUS</h2>
+
+      <label for="moved-toggle">Moved?</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="moved-toggle" class="toggle-checkbox" />
+        <label for="moved-toggle" class="toggle-label"></label>
+      </div>
+
+      <label for="autoCoralL1">Coral L1 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoCoralL1-minus">-</button>
+        <input type="number" id="autoCoralL1" value="0" min="0" readonly />
+        <button type="button" id="autoCoralL1-plus">+</button>
+      </div>
+
+      <label for="autoCoralL2">Coral L2 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoCoralL2-minus">-</button>
+        <input type="number" id="autoCoralL2" value="0" min="0" readonly />
+        <button type="button" id="autoCoralL2-plus">+</button>
+      </div>
+
+      <label for="autoCoralL3">Coral L3 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoCoralL3-minus">-</button>
+        <input type="number" id="autoCoralL3" value="0" min="0" readonly />
+        <button type="button" id="autoCoralL3-plus">+</button>
+      </div>
+
+      <label for="autoCoralL4">Coral L4 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoCoralL4-minus">-</button>
+        <input type="number" id="autoCoralL4" value="0" min="0" readonly />
+        <button type="button" id="autoCoralL4-plus">+</button>
+      </div>
+
+      <label for="autoCoralMissed">Auto coral missed/dropped </label>
+      <div class="counterContainer">
+        <button type="button" id="autoCoralMissed-minus">-</button>
+        <input type="number" id="autoCoralMissed" value="0" min="0" readonly />
+        <button type="button" id="autoCoralMissed-plus">+</button>
+      </div>
+
+      <label for="autoBarge">Auto barge scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoBarge-minus">-</button>
+        <input type="number" id="autoBarge" value="0" min="0" readonly />
+        <button type="button" id="autoBarge-plus">+</button>
+      </div>
+
+      <label for="autoProcessor">Auto processor scored </label>
+      <div class="counterContainer">
+        <button type="button" id="autoProcessor-minus">-</button>
+        <input type="number" id="autoProcessor" value="0" min="0" readonly />
+        <button type="button" id="autoProcessor-plus">+</button>
+      </div>
+
+      <label for="autoDislodgedAlgea-toggle">Dislodged Algea</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="autoDislodgedAlgea-toggle" class="toggle-checkbox" />
+        <label for="autoDislodgedAlgea-toggle" class="toggle-label"></label>
+      </div>
+
+      <label for="autoFoul">Auto foul</label>
+      <div class="counterContainer">
+        <button type="button" id="autoFoul-minus">-</button>
+        <input type="number" id="autoFoul" value="0" min="0" readonly />
+        <button type="button" id="autoFoul-plus">+</button>
+      </div>
+
+      <h2>TELEOP</h2>
+      <label for="TeleDislodgedAlgea-toggle">Dislodged Algea</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="TeleDislodgedAlgea-toggle" class="toggle-checkbox" />
+        <label for="TeleDislodgedAlgea-toggle" class="toggle-label"></label>
+      </div>
+
+      <label for="coralPickup-Location">Coral Pickup Location</label>
+      <select id="coralPickup-Location">
+        <option value="None">None</option>
+        <option value="Ground">Ground</option>
+        <option value="Human Player">Human Player</option>
+        <option value="Both">Both</option>
+      </select>
+
+      <label for="algeaPickup-Location">Algea Pickup Location</label>
+      <select id="algeaPickup-Location">
+        <option value="None">None</option>
+        <option value="Ground">Ground</option>
+        <option value="Coral Lollipop">Coral Lollipop</option>
+        <option value="Reef">Reef</option>
+      </select>
+
+      <label for="teleCoralL1">Coral L1 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleCoralL1-minus">-</button>
+        <input type="number" id="teleCoralL1" value="0" min="0" readonly />
+        <button type="button" id="teleCoralL1-plus">+</button>
+      </div>
+
+      <label for="teleCoralL2">Coral L2 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleCoralL2-minus">-</button>
+        <input type="number" id="teleCoralL2" value="0" min="0" readonly />
+        <button type="button" id="teleCoralL2-plus">+</button>
+      </div>
+
+      <label for="teleCoralL3">Coral L3 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleCoralL3-minus">-</button>
+        <input type="number" id="teleCoralL3" value="0" min="0" readonly />
+        <button type="button" id="teleCoralL3-plus">+</button>
+      </div>
+
+      <label for="teleCoralL4">Coral L4 scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleCoralL4-minus">-</button>
+        <input type="number" id="teleCoralL4" value="0" min="0" readonly />
+        <button type="button" id="teleCoralL4-plus">+</button>
+      </div>
+
+      <label for="teleCoralMissed">Teleop coral missed/dropped </label>
+      <div class="counterContainer">
+        <button type="button" id="teleCoralMissed-minus">-</button>
+        <input type="number" id="teleCoralMissed" value="0" min="0" readonly />
+        <button type="button" id="teleCoralMissed-plus">+</button>
+      </div>
+
+      <label for="teleBarge">Teleop barge scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleBarge-minus">-</button>
+        <input type="number" id="teleBarge" value="0" min="0" readonly />
+        <button type="button" id="teleBarge-plus">+</button>
+      </div>
+
+      <label for="teleProcessor">Teleop processor scored </label>
+      <div class="counterContainer">
+        <button type="button" id="teleProcessor-minus">-</button>
+        <input type="number" id="teleProcessor" value="0" min="0" readonly />
+        <button type="button" id="teleProcessor-plus">+</button>
+      </div>
+
+      <label for="crossfield/defense-toggle">Cross field/played defense show?</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="crossfield/defense-toggle" class="toggle-checkbox" />
+        <label for="crossfield/defense-toggle" class="toggle-label"></label>
+      </div>
+
+      <label for="touchedCage">Touched opposing cage? </label>
+      <div class="counterContainer">
+        <button type="button" id="touchedCage-minus">-</button>
+        <input type="number" id="touchedCage" value="0" min="0" readonly />
+        <button type="button" id="touchedCage-plus">+</button>
+      </div>
+
+      <h2>Endgame</h2>
+      <label for="endPosition">Ending Position: </label>
+      <select id="endPosition">
+        <option value="No">Not Parked</option>
+        <option value="P">Parked</option>
+        <option value="Sc">Shallow Climb</option>
+        <option value="Dc">Deep Climb</option>
+        <option value="Fsc">Failed Shallow Climb</option>
+        <option value="Fdc">Failed Deep Climb</option>
+      </select>
+
+      <label for="defensedAgainst-toggle">Did another team play defense on them?</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="defensedAgainst-toggle" class="toggle-checkbox" />
+        <label for="defensedAgainst-toggle" class="toggle-label"></label>
+      </div>
+
+      <h2>Postmatch</h2>
+
+      <label for="defensiveSkill">Defensive Skill: </label>
+      <select id="defensiveSkill">
+        <option value="0">0 (Did not play defense)</option>
+        <option value="1">1 (played ineffective and/or poor defense)</option>
+        <option value="2">2 (played midiocre defense)</option>
+        <option value="3">3 (played good defense)</option>
+        <option value="4">4 (played great defense)</option>
+      </select>
+
+      <label for="card">Yellow/Red Card: </label>
+      <select id="card">
+        <option value="No Card">No Card</option>
+        <option value="Yellow">Yellow Card</option>
+        <option value="Red">Red Card</option>
+      </select>
+
+      <label for="disable">Disabled, Died, ETC...: </label>
+      <select id="disable">
+        <option value="No Problems">No Problems</option>
+        <option value="Browned Out">Browned Out</option>
+        <option value="Tipped">Tipped</option>
+        <option value="Died">Died</option>
+        <option value="Died and came back">Died and came back</option>
+        <option value="Coral stuck 10">Coral stuck (less than 10 seconds)</option>
+        <option value="Coral stuck +">Coral stucked (more than 10 seconds)</option>
+        <option value="Drove over algea">Drove on algea and stuck</option>
+      </select>
+
+      
+
+      <label for="comments">Comments</label>
+      <textarea id="comments" rows="4"></textarea>
+
+      <label for="tags">Tags: </label>
+      <select id="tags">
+        <option value="None">None</option>
+        <option value="Good Defense">Good Defense</option>
+        <option value="Good Driving">Good Driving</option>
+        <option value="Ineffective Defense">Ineffective Defense</option>
+        <option value="Ineffective Driving">Ineffective Driving</option>
+        <option value="Slow Driving">Slow Driving</option>
+        <option value="Coral Dropped">Coral Dropped</option>
+        <option value="Algea Dropped">Algea Dropped</option>
+        <option value="Clumsy">Clumsy</option>
+        <option value="Slow Intake">Slow Intake</option>
+        <option value="Slow Driving">Slow Driving</option>
+      </select>
+
+
+      <button type="submit">Generate QR</button>
+    </form>
+
+    <div id="qrcode"></div>
+  </div>
+</body>
+
+</html>
