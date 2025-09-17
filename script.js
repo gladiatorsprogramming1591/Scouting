@@ -3,6 +3,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById('data-form');
     const qrContainer = document.getElementById('qrcode');
 
+    // Reset button logic with confirmation
+    const resetBtn = document.getElementById('reset-btn');
+    resetBtn.addEventListener('click', () => {
+    if (confirm("Are you sure you want to reset? All data will be cleared.")) {
+        form.reset(); // clears all text, numbers, selects, and checkboxes
+
+        // Reset counters (since they're readonly number inputs with +/-)
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.value = 0;
+        });
+
+        // Clear QR code display
+        qrContainer.innerHTML = '';
+    }
+});
+
     // Auto section for adding
     const autoCoralL1Input = document.getElementById('autoCoralL1');
     const autoCoralL2Input = document.getElementById('autoCoralL2');
@@ -131,3 +147,4 @@ function setupCounter(id) {
         }
     });
 }
+
