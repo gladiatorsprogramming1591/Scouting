@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", function ()
     
     [
         'autoFuel',
-        'fuelScore'
+        'fuelScore',
+        'fuelPassed',
     ].forEach(setupCounter);
     
     form.addEventListener('submit', function (e) 
@@ -40,15 +41,17 @@ document.addEventListener("DOMContentLoaded", function ()
 
         // Autonomous data
         const moved = document.getElementById("moved-toggle").checked;
-        const autoFuelScore = document.getElementById("autoFuel").value;
+        const autoFuelAttempted = document.getElementById("autoFuel").value;
         const autoFuelPickup = document.getElementById("autoFuelPickup").value;
+        const autoShotAccuracy = document.getElementById("autoShotAccuracy").value;
         const autoClimbed = document.getElementById("autoClimb-toggle").checked;
 
         // TELEOP data
-        const fuelScore = document.getElementById("fuelScore").value;
+        const teleFuelAttempted = document.getElementById("teleFuelAttempted").value;
+        const teleShotAccuracy = document.getElementById("teleShotAccuracy").value;
         const defensiveSkill = document.getElementById("defensiveSkill").value;
-        const TELEOPFuelPickupLoc = document.getElementById("TELEOPFuelPickup").value;
-
+        const teleFuelPickupLoc = document.getElementById("TELEOPFuelPickup").value;
+        const fuelPassed = document.getElementById("fuelPassed").value;
         // Endgame Data
         const climb = document.getElementById("Climb").value;
 
@@ -66,12 +69,14 @@ document.addEventListener("DOMContentLoaded", function ()
             startingPos,
             noShow,
             moved,
-            autoFuelScore,
+            autoFuelAttempted,
             autoFuelPickup,
+            autoShotAccuracy,
             autoClimbed,
-            fuelScore,
+            teleFuelAttempted,
+            teleShotAccuracy,
             defensiveSkill,
-            TELEOPFuelPickupLoc,
+            teleFuelPickupLoc,
             climb,
             card,
             disable,

@@ -57,7 +57,7 @@
                 <label for="moved-toggle" class="toggle-label"></label>
             </div>
 
-            <label for="autoFuel">Fuel scored </label>
+            <label for="autoFuel">Fuel Shot Attempted</label>
             <div class="counterContainer">
                 <button type="button" id="autoFuel-minusFive">-5</button>
                 <button type="button" id="autoFuel-minus">-</button>
@@ -66,12 +66,24 @@
                 <button type="button" id="autoFuel-plusFive">+5</button>
             </div>
 
+            <label for="autoShotAccuracy">Fuel Score Accuracy</label>
+            <select id="autoShotAccuracy">
+                <option value="0">0 (0% - 25%)</option>
+                <option value="1">1 (25% - 50%)</option>
+                <option value="2">2 (50% - 70%)</option>
+                <option value="3">3 (70% - 85%)</option>
+                <option value="4">4 (85% - 95%)</option>
+                <option value="5">5 (95% +)</option>
+            </select>
+
             <label for="autoFuelPickup">Auto Fuel Pickup Location </label>
             <select id="autoFuelPickup">
                 <option value="O">Outpost</option>
                 <option value="D">Depot</option>
                 <option value="N/A">N/A</option>
             </select>
+
+
 
             <label for="autoClimb-toggle">Climbed?</label>
             <div class="toggle-container">
@@ -83,14 +95,24 @@
 
             <h3 id = "activeShift">Active Shift</h3>
 
-            <label for="fuelScore">Fuel scored </label>
+            <label for="teleFuelAttempted">Fuel Shot Attempted </label>
             <div class="counterContainer">
-                <button type="button" id="fuelScore-minusFive">-5</button>
-                <button type="button" id="fuelScore-minus">-</button>
-                <input type="number" id="fuelScore" value="0" min="0" readonly />
-                <button type="button" id="fuelScore-plus">+</button>
-                <button type="button" id="fuelScore-plusFive">+5</button>
+                <button type="button" id="teleFuelAttempted-minusFive">-5</button>
+                <button type="button" id="teleFuelAttempted-minus">-</button>
+                <input type="number" id="teleFuelAttempted" value="0" min="0" readonly />
+                <button type="button" id="teleFuelAttempted-plus">+</button>
+                <button type="button" id="teleFuelAttempted-plusFive">+5</button>
             </div>
+
+            <label for="teleShotAccuracy">Fuel Score Accuracy</label>
+            <select id="teleShotAccuracy">
+                <option value="0">0 (0% - 25%)</option>
+                <option value="1">1 (25% - 50%)</option>
+                <option value="2">2 (50% - 70%)</option>
+                <option value="3">3 (70% - 85%)</option>
+                <option value="4">4 (85% - 95%)</option>
+                <option value="5">5 (95% +)</option>
+            </select>
 
             <h3 id = "inactiveShift">Inactive Shift</h3>
 
@@ -109,6 +131,15 @@
                 <option value="G">Ground</option>
                 <option value="B">Both</option>
             </select>
+
+            <label for="fuelPassed">Fuel Passed Alliance's Area</label>
+            <div class="counterContainer">
+                <button type="button" id="fuelPassed-minusFive">-5</button>
+                <button type="button" id="fuelPassed-minus">-</button>
+                <input type="number" id="fuelPassed" value="0" min="0" readonly />
+                <button type="button" id="fuelPassed-plus">+</button>
+                <button type="button" id="fuelPassed-plusFive">+5</button>
+            </div>
 
             <h2>ENDGAME</h2>
             <label for="Climb">Climb:</label>
