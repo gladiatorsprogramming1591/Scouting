@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function ()
         // TELEOP data
         const fuelScore = document.getElementById("fuelScore").value;
         const defensiveSkill = document.getElementById("defensiveSkill").value;
-        const collectFuel = document.getElementById("collectFuel-toggle").checked;
+        const TELEOPFuelPickupLoc = document.getElementById("TELEOPFuelPickup").value;
 
         // Endgame Data
         const climb = document.getElementById("Climb").value;
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function ()
             autoClimbed,
             fuelScore,
             defensiveSkill,
-            collectFuel,
+            TELEOPFuelPickupLoc,
             climb,
             card,
             disable,
