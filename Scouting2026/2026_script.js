@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function ()
     
     [
         'autoFuel',
-        'fuelScore',
+        'teleFuelAttempted',
         'fuelPassed',
     ].forEach(setupCounter);
     
@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function ()
         // Autonomous data
         const moved = document.getElementById("moved-toggle").checked;
         const autoFuelAttempted = document.getElementById("autoFuel").value;
-        const autoFuelPickup = document.getElementById("autoFuelPickup").value;
         const autoShotAccuracy = document.getElementById("autoShotAccuracy").value;
+        const autoFuelPickup = document.getElementById("autoFuelPickup").value;
         const autoClimbed = document.getElementById("autoClimb-toggle").checked;
 
         // TELEOP data
@@ -70,13 +70,14 @@ document.addEventListener("DOMContentLoaded", function ()
             noShow,
             moved,
             autoFuelAttempted,
-            autoFuelPickup,
             autoShotAccuracy,
+            autoFuelPickup,
             autoClimbed,
             teleFuelAttempted,
             teleShotAccuracy,
             defensiveSkill,
             teleFuelPickupLoc,
+            fuelPassed,
             climb,
             card,
             disable,
@@ -99,29 +100,54 @@ document.addEventListener("DOMContentLoaded", function ()
 
 function setupCounter(id) {
     const input = document.getElementById(id);
-    const plus = document.getElementById(`${id}-plus`);
-    const minus = document.getElementById(`${id}-minus`);
-    const plusFive = document.getElementById(`${id}-plusFive`);
-    const minusFive = document.getElementById(`${id}-minusFive`);
+    const plusSlow = document.getElementById(`${id}-plusSlow`);
+    const minusSlow = document.getElementById(`${id}-minusSlow`);
+    const plusFast = document.getElementById(`${id}-plusFast`);
+    const minusFast = document.getElementById(`${id}-minusFast`);
 
-    plus.addEventListener('click', () => {
-        input.value = parseInt(input.value) + 1;
-    });
+    let interval = null;
+    let timeout = null;
 
-    plusFive.addEventListener('click', () => {
-        input.value = parseInt(input.value) + 5;
-    });
+    const startHold = (delta,delay) => {
+        // Apply once immediately
+        updateValue(delta);
 
-    minus.addEventListener('click', () => {
-        if (parseInt(input.value) > 0) {
-            input.value = parseInt(input.value) - 1;
-        }
-    });
+        // After short delay, start rapid repeat
+        timeout = setTimeout(() => {
+            interval = setInterval(() => {
+                updateValue(delta);
+            }, delay); // speed of repeating (ms)
+        }, delay); // delay before repeat starts
+    };
 
-    minusFive.addEventListener('click', () => {
-        if (parseInt(input.value) > 4)
-        {
-            input.value = parseInt(input.value) - 5;
-        }
-    });
+    const stopHold = () => {
+        clearTimeout(timeout);
+        clearInterval(interval);
+        timeout = null;
+        interval = null;
+    };
+
+    const updateValue = (delta) => {
+        const value = parseInt(input.value) || 0;
+        const newValue = Math.max(0, value + delta);
+        input.value = newValue;
+    };
+
+    const bindHold = (button, delta, delay) => {
+        button.addEventListener('mousedown', () => startHold(delta));
+        button.addEventListener('mouseup', stopHold);
+        button.addEventListener('mouseleave', stopHold);
+
+        // Mobile support
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startHold(delta,delay);
+        });
+        button.addEventListener('touchend', stopHold);
+    };
+
+    bindHold(plusSlow, 1, 250);
+    bindHold(minusSlow, -1, 250);
+    bindHold(plusFast, 1, 125);
+    bindHold(minusFast, -1, 125);
 }
