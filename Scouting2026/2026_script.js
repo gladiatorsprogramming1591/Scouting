@@ -1,5 +1,17 @@
+const undoStack = [];
+const redoStack = [];
+
+let isRestoring = false; // prevents undo/redo from re-recording
+
+
 document.addEventListener("DOMContentLoaded", function ()
 {
+    const undoBtn = document.getElementById("undo-btn");
+    const redoBtn = document.getElementById("redo-btn");
+
+    undoBtn.addEventListener("click", undo);
+    redoBtn.addEventListener("click", redo);
+
     const form = document.getElementById('data-form');
     const qrContainer = document.getElementById('qrcode');
 
@@ -20,6 +32,36 @@ document.addEventListener("DOMContentLoaded", function ()
     // Clear QR code display
     qrContainer.innerHTML = '';
     });
+
+    function undo() 
+    {
+        if (undoStack.length === 0) return;
+
+        const action = undoStack.pop();
+        const input = document.getElementById(action.inputId);
+
+        isRestoring = true;
+        input.value = action.from;
+        isRestoring = false;
+
+        redoStack.push(action);
+    }
+
+    function redo() 
+    {
+        if (redoStack.length === 0) return;
+
+        const action = redoStack.pop();
+        const input = document.getElementById(action.inputId);
+
+        isRestoring = true;
+        input.value = action.to;
+        isRestoring = false;
+
+        undoStack.push(action);
+    }
+
+
 
     
     [
@@ -109,12 +151,19 @@ function setupCounter(id) {
 
     const colorSlow = "rgba(37, 99, 235, 0.18)";
     const colorFast = "rgba(195, 255, 0, 0.18)";
-    const colorExtraFast = "rgba(255, 0, 0, 0.18)"
+    const colorExtraFast = "rgba(255, 0, 0, 0.18)";
+
+    let holdStartValue = null;
     let interval = null;
     let timeout = null;
 
     const startHold = (delta,delay,color) => {
         // Apply once immediately
+        if (holdStartValue === null) 
+        {
+            holdStartValue = parseInt(input.value) || 0;
+        }
+
         updateValue(delta);
 
         // Visual feedback only for + / ++
@@ -139,12 +188,33 @@ function setupCounter(id) {
 
         // Remove screen feedback
         overlay.classList.remove("active");
+
+        const endValue = parseInt(input.value) || 0;
+
+        if (
+            holdStartValue !== null &&
+            holdStartValue !== endValue &&
+            !isRestoring
+        ) 
+        {
+            undoStack.push({
+                inputId: input.id,
+                from: holdStartValue,
+                to: endValue
+            });
+
+            redoStack.length = 0; // new action invalidates redo
+        }
+
+        holdStartValue = null;
+
     };
 
     const updateValue = (delta) => {
+        if (isRestoring) return;
+
         const value = parseInt(input.value) || 0;
-        const newValue = Math.max(0, value + delta);
-        input.value = newValue;
+        input.value = Math.max(0, value + delta);
     };
 
     const bindHold = (button, delta, delay, color) => {

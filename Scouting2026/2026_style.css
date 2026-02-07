@@ -259,3 +259,49 @@ button[type="submit"]:hover {
     font-size: 1rem;
   }
 }
+
+/* ---------- Undo and Redo ---------- */
+.undo-redo-container {
+    position: fixed;
+    top: 0;
+    background: #0f172a;
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 100;
+}
+
+.history-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.history-btn:active {
+    transform: scale(0.96);
+}
+
+.history-btn.undo {
+    background: rgba(37, 99, 235, 0.9);
+    color: white;
+}
+
+.history-btn.redo {
+    background: rgba(16, 185, 129, 0.9);
+    color: white;
+}
+
+.history-btn:hover {
+    filter: brightness(1.1);
+}

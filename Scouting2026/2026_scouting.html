@@ -19,10 +19,10 @@
         <form id="data-form">
             <h2>PREMATCH</h2>
             <label for="scouterInitial">Scouter Initial</label>
-            <input type="string" id="scouterInitial" required>
+            <input type="string" id="scouterInitial">
 
             <label for="match-number">Match Number:</label>
-            <input type="number" id="match-number" min="1" required/>
+            <input type="number" id="match-number" min="1"/>
 
             <label for="robot-select">Robot:</label>
             <select id="robot-select">
@@ -35,7 +35,7 @@
             </select>
 
             <label for="teamNumber">Team Number: </label>
-            <input type="number" id="teamNumber" min="1" required />
+            <input type="number" id="teamNumber" min="1"/>
 
             <label for="startingPosition">Starting Position: </label>
             <select id="startingPosition">
@@ -173,12 +173,21 @@
             </select>
 
             <label for="comments">Comments</label>
-            <textarea id="comments" rows="4" required></textarea>
+            <textarea id="comments" rows="4"></textarea>
 
-            <button type="submit">Generate QR</button>
+            
             <button type="button" id="reset-btn">Reset</button>
+            <button type="submit">Generate QR</button>
         </form>
         <div id="qrcode"></div>
+        <div class="undo-redo-container">
+            <button id="undo-btn" class="history-btn undo">
+                <span class="icon">↶</span> Undo
+            </button>
+            <button id="redo-btn" class="history-btn redo">
+                <span class="icon">↷</span> Redo
+            </button>
+        </div>
     </div>
 </body>
 </html>
