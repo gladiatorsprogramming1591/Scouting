@@ -105,10 +105,11 @@ function setupCounter(id) {
     const plusSlow = document.getElementById(`${id}-plusSlow`);
     const minusSlow = document.getElementById(`${id}-minusSlow`);
     const plusFast = document.getElementById(`${id}-plusFast`);
-    const minusFast = document.getElementById(`${id}-minusFast`);
+    const plusExtraFast = document.getElementById(`${id}-plusExtraFast`);
 
-    const colorFast = "rgba(255, 0, 0, 0.18)";
-    const colorSlow = "rgba(37, 99, 235, 0.18)"
+    const colorSlow = "rgba(37, 99, 235, 0.18)";
+    const colorFast = "rgba(195, 255, 0, 0.18)";
+    const colorExtraFast = "rgba(255, 0, 0, 0.18)"
     let interval = null;
     let timeout = null;
 
@@ -163,5 +164,5 @@ function setupCounter(id) {
     bindHold(plusSlow, 1, 250, colorSlow);
     bindHold(minusSlow, -1, 250, colorSlow);
     bindHold(plusFast, 1, 125, colorFast);
-    bindHold(minusFast, -1, 125, colorFast);
+    bindHold(plusExtraFast,1,75, colorExtraFast)
 }

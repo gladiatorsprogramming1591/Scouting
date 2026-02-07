@@ -157,7 +157,7 @@ textarea {
 /* ---------- Counter ---------- */
 .counterContainer {
   display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   gap: 0.4rem;
   align-items: center;
   margin-top: 0.5rem;
@@ -190,16 +190,38 @@ textarea {
   background: #d1d5db;
 }
 
+button[id$="plusSlow"],
+button[id$="minusSlow"] {
+  background: rgb(0, 200, 255);
+  color: rgb(0, 0, 0);
+}
+
 /* Highlight fast buttons */
 button[id$="plusFast"],
 button[id$="minusFast"] {
-  background: var(--primary);
-  color: white;
+  background: yellow;
+  color: #3f5277;
+}
+
+button[id$="plusExtraFast"] {
+  background: rgb(255, 102, 0);
+  color: #000000;
+}
+
+button[id$="plusSlow"]:hover,
+button[id$="minusSlow"]:hover {
+  background: rgb(0, 17, 255);
+  color: rgb(255, 255, 255);
 }
 
 button[id$="plusFast"]:hover,
 button[id$="minusFast"]:hover {
-  background: var(--primary-dark);
+  background: #cfcc00;
+}
+
+button[id$="plusExtraFast"]:hover {
+  background: rgb(185, 0, 0);
+  color: #ffffff;
 }
 
 /* ---------- Action Buttons ---------- */
