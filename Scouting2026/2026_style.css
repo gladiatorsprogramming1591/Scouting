@@ -20,6 +20,21 @@ body {
   color: var(--text);
 }
 
+/* Full-screen tint overlay for button hold feedback */
+#hold-overlay {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.12s ease;
+}
+
+/* Active state */
+#hold-overlay.active {
+  opacity: 1;
+}
+
 /* ---------- Container ---------- */
 .container {
   max-width: 520px;
@@ -152,7 +167,6 @@ textarea {
   text-align: center;
   font-size: 1.2rem;
   background: #f8fafc;
-  border: 1px solid var(--border);
   height: 42px;
 }
 

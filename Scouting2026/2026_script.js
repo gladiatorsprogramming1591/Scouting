@@ -100,17 +100,27 @@ document.addEventListener("DOMContentLoaded", function ()
 
 function setupCounter(id) {
     const input = document.getElementById(id);
+    const overlay = document.getElementById("hold-overlay");
+
     const plusSlow = document.getElementById(`${id}-plusSlow`);
     const minusSlow = document.getElementById(`${id}-minusSlow`);
     const plusFast = document.getElementById(`${id}-plusFast`);
     const minusFast = document.getElementById(`${id}-minusFast`);
 
+    const colorFast = "rgba(255, 0, 0, 0.18)";
+    const colorSlow = "rgba(37, 99, 235, 0.18)"
     let interval = null;
     let timeout = null;
 
-    const startHold = (delta,delay) => {
+    const startHold = (delta,delay,color) => {
         // Apply once immediately
         updateValue(delta);
+
+        // Visual feedback only for + / ++
+        if (delta > 0) {
+            overlay.classList.add("active");
+            overlay.style.background = color;
+        }
 
         // After short delay, start rapid repeat
         timeout = setTimeout(() => {
@@ -125,6 +135,9 @@ function setupCounter(id) {
         clearInterval(interval);
         timeout = null;
         interval = null;
+
+        // Remove screen feedback
+        overlay.classList.remove("active");
     };
 
     const updateValue = (delta) => {
@@ -133,21 +146,22 @@ function setupCounter(id) {
         input.value = newValue;
     };
 
-    const bindHold = (button, delta, delay) => {
-        button.addEventListener('mousedown', () => startHold(delta));
+    const bindHold = (button, delta, delay, color) => {
+        button.addEventListener('mousedown', () => startHold(delta,delay,color));
         button.addEventListener('mouseup', stopHold);
         button.addEventListener('mouseleave', stopHold);
 
         // Mobile support
         button.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            startHold(delta,delay);
+            startHold(delta,delay,color);
         });
         button.addEventListener('touchend', stopHold);
+        button.addEventListener("touchcancel", stopHold);
     };
 
-    bindHold(plusSlow, 1, 250);
-    bindHold(minusSlow, -1, 250);
-    bindHold(plusFast, 1, 125);
-    bindHold(minusFast, -1, 125);
+    bindHold(plusSlow, 1, 250, colorSlow);
+    bindHold(minusSlow, -1, 250, colorSlow);
+    bindHold(plusFast, 1, 125, colorFast);
+    bindHold(minusFast, -1, 125, colorFast);
 }
