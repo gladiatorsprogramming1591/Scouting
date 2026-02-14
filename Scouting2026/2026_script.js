@@ -36,6 +36,7 @@ function restoreFormState(state) {
         el.dispatchEvent(new Event("input", { bubbles: true }));
     });
 
+
     isRestoring = false;
 }
 
@@ -67,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function ()
                     input.value = 0;
                 });
         }
-    // Clear QR code display
-    qrContainer.innerHTML = '';
+        // Clear QR code display
+        qrContainer.innerHTML = '';
     });
 
     const queueSnapshot = () => 
@@ -97,13 +98,10 @@ document.addEventListener("DOMContentLoaded", function ()
             from: pendingSnapshot,
             to: lastSnapshot
         });
-
-        redoStack.length = 0;
         pendingSnapshot = null;
     }
 
-form.addEventListener("input", queueSnapshot);
-form.addEventListener("change", queueSnapshot);
+    form.addEventListener("input", queueSnapshot);
 
 
     function undo() 
@@ -114,7 +112,6 @@ form.addEventListener("change", queueSnapshot);
         restoreFormState(action.from);
         redoStack.push(action);
         lastSnapshot = action.from;
-
     }
 
     function redo() 
@@ -126,7 +123,6 @@ form.addEventListener("change", queueSnapshot);
         undoStack.push(action);
 
         lastSnapshot = action.to;
-
     }
 
 
@@ -251,17 +247,15 @@ function setupCounter(id) {
     const stopHold = () => {
         clearTimeout(timeout);
         clearInterval(interval);
-        timeout = null;
-        interval = null;
 
-        // Remove screen feedback
         overlay.classList.remove("active");
 
         if (pendingSnapshot) {
-        commitSnapshot();
-    }
+            commitSnapshot();
+        }
 
-    holdStartValue = null;
+        holdStartValue = null;
+
 
     };
 
