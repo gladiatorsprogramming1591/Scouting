@@ -2,6 +2,42 @@ const undoStack = [];
 const redoStack = [];
 
 let isRestoring = false; // prevents undo/redo from re-recording
+let pendingSnapshot = null;
+let commitTimer = null;
+const COMMIT_DELAY = 400; // typing pause threshold (ms)
+
+function captureFormState(form) {
+    const data = {};
+
+    form.querySelectorAll("input, select, textarea").forEach(el => {
+        if (el.type === "checkbox") {
+            data[el.id] = el.checked;
+        } else {
+            data[el.id] = el.value;
+        }
+    });
+
+    return data;
+}
+
+function restoreFormState(state) {
+    isRestoring = true;
+
+    Object.entries(state).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (el.type === "checkbox") {
+            el.checked = value;
+        } else {
+            el.value = value;
+        }
+
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+
+    isRestoring = false;
+}
 
 
 document.addEventListener("DOMContentLoaded", function ()
@@ -14,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function ()
 
     const form = document.getElementById('data-form');
     const qrContainer = document.getElementById('qrcode');
+
+    let lastSnapshot = captureFormState(form);
 
     // Reset button logic with confirmation
     const resetBtn = document.getElementById('reset-btn');
@@ -33,18 +71,50 @@ document.addEventListener("DOMContentLoaded", function ()
     qrContainer.innerHTML = '';
     });
 
+    const queueSnapshot = () => 
+    {
+        if (isRestoring) return;
+
+        const current = captureFormState(form);
+
+        // First change in this action
+        if (!pendingSnapshot) {
+            pendingSnapshot = lastSnapshot;
+        }
+
+        // Reset commit timer
+        clearTimeout(commitTimer);
+        commitTimer = setTimeout(commitSnapshot, COMMIT_DELAY);
+
+        lastSnapshot = current;
+    };
+
+    function commitSnapshot() 
+    {
+        if (!pendingSnapshot) return;
+
+        undoStack.push({
+            from: pendingSnapshot,
+            to: lastSnapshot
+        });
+
+        redoStack.length = 0;
+        pendingSnapshot = null;
+    }
+
+form.addEventListener("input", queueSnapshot);
+form.addEventListener("change", queueSnapshot);
+
+
     function undo() 
     {
         if (undoStack.length === 0) return;
 
         const action = undoStack.pop();
-        const input = document.getElementById(action.inputId);
-
-        isRestoring = true;
-        input.value = action.from;
-        isRestoring = false;
-
+        restoreFormState(action.from);
         redoStack.push(action);
+        lastSnapshot = action.from;
+
     }
 
     function redo() 
@@ -52,13 +122,11 @@ document.addEventListener("DOMContentLoaded", function ()
         if (redoStack.length === 0) return;
 
         const action = redoStack.pop();
-        const input = document.getElementById(action.inputId);
-
-        isRestoring = true;
-        input.value = action.to;
-        isRestoring = false;
-
+        restoreFormState(action.to);
         undoStack.push(action);
+
+        lastSnapshot = action.to;
+
     }
 
 
@@ -189,24 +257,11 @@ function setupCounter(id) {
         // Remove screen feedback
         overlay.classList.remove("active");
 
-        const endValue = parseInt(input.value) || 0;
+        if (pendingSnapshot) {
+        commitSnapshot();
+    }
 
-        if (
-            holdStartValue !== null &&
-            holdStartValue !== endValue &&
-            !isRestoring
-        ) 
-        {
-            undoStack.push({
-                inputId: input.id,
-                from: holdStartValue,
-                to: endValue
-            });
-
-            redoStack.length = 0; // new action invalidates redo
-        }
-
-        holdStartValue = null;
+    holdStartValue = null;
 
     };
 
@@ -215,6 +270,7 @@ function setupCounter(id) {
 
         const value = parseInt(input.value) || 0;
         input.value = Math.max(0, value + delta);
+        input.dispatchEvent(new Event("input", { bubbles: true }));
     };
 
     const bindHold = (button, delta, delay, color) => {
