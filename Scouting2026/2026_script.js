@@ -5,6 +5,7 @@ let isRestoring = false; // prevents undo/redo from re-recording
 let pendingSnapshot = null;
 let commitTimer = null;
 const COMMIT_DELAY = 400; // typing pause threshold (ms)
+let startHold;
 
 function captureFormState(form) {
     const data = {};
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function ()
         lastSnapshot = current;
     };
 
-    function commitSnapshot() 
+    commitSnapshot = () => 
     {
         if (!pendingSnapshot) return;
 
