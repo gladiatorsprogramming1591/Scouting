@@ -59,18 +59,46 @@ document.addEventListener("DOMContentLoaded", function ()
     const resetBtn = document.getElementById('reset-btn');
     resetBtn.addEventListener('click', () => 
     {
-        if (confirm("Are you sure you want to reset? All data will be cleared.")) 
+        if (!confirm("Are you sure you want to reset? All data will be cleared.")) 
         {
-            form.reset(); // clears all text, numbers, selects, and checkboxes
-
-            // Reset counters (since they're readonly number inputs with +/-)
-            document.querySelectorAll('input[type="number"]').forEach(input => 
-                {
-                    input.value = 0;
-                });
+            return;
         }
+
+        // Save values we want to keep
+        const scouterValue = document.getElementById('scouterInitial').value;
+        const matchValue = document.getElementById('match-number').value;
+
+        // Clear ALL inputs, selects, and textareas
+        form.querySelectorAll("input, select, textarea").forEach(el => {
+
+            // Skip the two protected fields
+            if (el.id === "scouterInitial" || el.id === "match-number") {
+                return;
+            }
+
+            if (el.type === "checkbox") {
+                el.checked = false;
+            } 
+            else if (el.type === "number") {
+                el.value = 0;
+            } 
+            else {
+                el.value = "";
+            }
+
+            // Trigger input event so undo system updates properly
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+
+        // Restore protected values (extra safety)
+        document.getElementById('scouterInitial').value = scouterValue;
+        document.getElementById('match-number').value = matchValue;
+
         // Clear QR code display
         qrContainer.innerHTML = '';
+
+        // Commit this as one undoable action
+        commitSnapshot();
     });
 
     const queueSnapshot = () => 
@@ -91,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function ()
         lastSnapshot = current;
     };
 
-    commitSnapshot = () => 
+    function commitSnapshot () 
     {
         if (!pendingSnapshot) return;
 
