@@ -187,6 +187,9 @@ document.addEventListener("DOMContentLoaded", function ()
         const defensiveSkill = document.getElementById("defensiveSkill").value;
         const teleFuelPickupLoc = document.getElementById("TELEOPFuelPickup").value;
         const fuelPassed = document.getElementById("fuelPassed").value;
+        const inactive = Array.from(
+            document.querySelectorAll('input[name="inactive"]:checked')
+        ).map(cb => cb.value);
         // Endgame Data
         const climb = document.getElementById("Climb").value;
 
@@ -210,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function ()
             autoClimbed,
             teleFuelAttempted,
             teleShotAccuracy,
+            inactive.join(","),
             defensiveSkill,
             teleFuelPickupLoc,
             fuelPassed,

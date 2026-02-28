@@ -170,6 +170,13 @@ textarea {
   height: 42px;
 }
 
+/* ---------- Checker Buttons ---------- */
+input[type="checkbox"] {
+    transform: scale(1.5);   /* 1 = normal size */
+    margin-right: 8px;       /* spacing from label text */
+    cursor: pointer;
+}
+
 /* ---------- Counter Buttons ---------- */
 .counterContainer button {
   background: #e5e7eb;
