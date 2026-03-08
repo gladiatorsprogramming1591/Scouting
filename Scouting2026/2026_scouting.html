@@ -37,6 +37,9 @@
             <label for="teamNumber">Team Number: </label>
             <input type="number" id="teamNumber" min="1"/>
 
+            <label for="fuelRate">Fuels Per Second</label>
+            <input type="number" id="fuelRate" value="0" min="0" step="0.1">
+
             <label for="startingPosition">Starting Position: </label>
             <select id="startingPosition">
                 <option value="O">Outpost (Human Player Station)</option>
@@ -49,6 +52,8 @@
                 <input type="checkbox" id="noShow-toggle" class="toggle-checkbox" />
                 <label for="noShow-toggle" class="toggle-label"></label>
             </div>
+
+            
 
             <h2>AUTONOMOUS</h2>
 
@@ -65,6 +70,9 @@
                 <button type="button" id="autoFuel-plusSlow">+</button>
                 <button type="button" id="autoFuel-plusFast">++</button>
                 <button type="button" id="autoFuel-plusExtraFast">+++</button>
+                <br>
+                <button type="button" id="autoFuel-duration">⏱</button>
+                
             </div>
 
             <label for="autoShotAccuracy">Fuel Score Accuracy</label>
@@ -104,6 +112,8 @@
                 <button type="button" id="teleFuelAttempted-plusSlow">+</button>
                 <button type="button" id="teleFuelAttempted-plusFast">++</button>
                 <button type="button" id="teleFuelAttempted-plusExtraFast">+++</button>
+                <br>
+                <button type="button" id="teleFuelAttempted-duration">⏱</button>
             </div>
 
             <label for="teleShotAccuracy">Fuel Score Accuracy</label>
@@ -116,8 +126,7 @@
                 <option value="5">5 (95% +)</option>
             </select>
 
-            <h3 id = "inactiveShift">Inactive Shift</h3>
-
+            <br>
             <div class="form-group">
             <label>What robot did while hub inactive</label>
 

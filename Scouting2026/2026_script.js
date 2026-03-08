@@ -6,6 +6,17 @@ let pendingSnapshot = null;
 let commitTimer = null;
 const COMMIT_DELAY = 400; // typing pause threshold (ms)
 let startHold;
+let fuelRateData = {};
+
+
+fetch("fuelRates.json")
+    .then(response => response.json())
+    .then(data => {
+        fuelRateData = data;
+    })
+    .catch(err => {
+        console.error("Failed to load fuel rate data:", err);
+    });
 
 function captureFormState(form) {
     const data = {};
@@ -154,7 +165,17 @@ document.addEventListener("DOMContentLoaded", function ()
         lastSnapshot = action.to;
     }
 
+    const teamInput = document.getElementById("teamNumber");
+    const fuelRateInput = document.getElementById("fuelRate");
 
+    teamInput.addEventListener("change", () => {
+
+        const team = teamInput.value.trim();
+
+        if (fuelRateData[team] !== undefined) {
+            fuelRateInput.value = fuelRateData[team];
+        }
+    });
 
     
     [
@@ -245,6 +266,7 @@ function setupCounter(id) {
     const minusSlow = document.getElementById(`${id}-minusSlow`);
     const plusFast = document.getElementById(`${id}-plusFast`);
     const plusExtraFast = document.getElementById(`${id}-plusExtraFast`);
+    const durationBtn = document.getElementById(`${id}-duration`);
 
     const colorSlow = "rgba(37, 99, 235, 0.18)";
     const colorFast = "rgba(195, 255, 0, 0.18)";
@@ -253,7 +275,42 @@ function setupCounter(id) {
     let holdStartValue = null;
     let interval = null;
     let timeout = null;
+    let durationInterval = null;
 
+    const toggleDuration = () => {
+
+        const fuelRateInput = document.getElementById("fuelRate");
+        const rate = parseFloat(fuelRateInput.value) || 0;
+
+        if (durationInterval) {
+
+            // STOP
+            clearInterval(durationInterval);
+            durationInterval = null;
+
+            overlay.classList.remove("active");
+            durationBtn.classList.remove("duration-active");
+
+            if (pendingSnapshot) {
+                commitSnapshot();
+            }
+
+            return;
+        }
+
+        if (rate <= 0) return;
+
+        const intervalTime = 1000 / rate;
+
+        durationInterval = setInterval(() => {
+            updateValue(1);
+        }, intervalTime);
+
+        overlay.classList.add("active");
+        overlay.style.background = "rgba(255,165,0,0.25)";
+
+        durationBtn.classList.add("duration-active");
+    };
     const startHold = (delta,delay,color) => {
         // Apply once immediately
         if (holdStartValue === null) 
@@ -313,6 +370,18 @@ function setupCounter(id) {
         button.addEventListener('touchend', stopHold);
         button.addEventListener("touchcancel", stopHold);
     };
+
+    if (durationBtn) {
+
+        durationBtn.addEventListener("click", toggleDuration);
+
+        durationBtn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            startDuration();
+        });
+
+        durationBtn.addEventListener("touchend", toggleDuration);
+    }
 
     bindHold(plusSlow, 1, 250, colorSlow);
     bindHold(minusSlow, -1, 250, colorSlow);

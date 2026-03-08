@@ -312,3 +312,14 @@ button[type="submit"]:hover {
 .history-btn:hover {
     filter: brightness(1.1);
 }
+
+@keyframes timerPulse {
+  0% { box-shadow: 0 0 5px rgba(249,115,22,0.5); }
+  50% { box-shadow: 0 0 18px rgba(249,115,22,0.9); }
+  100% { box-shadow: 0 0 5px rgba(249,115,22,0.5); }
+}
+
+button[id$="duration"].duration-active {
+  background: #f97316;
+  animation: timerPulse 1.2s infinite;
+}
