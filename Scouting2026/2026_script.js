@@ -9,7 +9,7 @@ let startHold;
 let fuelRateData = {};
 
 
-fetch("fuelRates.json")
+fetch("fuelrates.json")
     .then(response => response.json())
     .then(data => {
         fuelRateData = data;
