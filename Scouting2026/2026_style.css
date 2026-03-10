@@ -319,13 +319,6 @@ button[type="submit"]:hover {
   100% { box-shadow: 0 0 5px rgba(249,115,22,0.5); }
 }
 
-button[id$="duration"].duration-active {
-  background: #f97316;
-  animation: timerPulse 1.2s infinite;
-  
-
-}
-
 button[id$="duration"]
 {
   border-radius: 8px;
@@ -334,5 +327,11 @@ button[id$="duration"]
     padding: 0 0.8rem;
     border: none;
     transition: background 0.15s ease, transform 0.1s ease;
+
+}
+button[id$="duration"].duration-active {
+  background: #f97316;
+  animation: timerPulse 1.2s infinite;
+  
 
 }
