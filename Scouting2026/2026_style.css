@@ -322,4 +322,17 @@ button[type="submit"]:hover {
 button[id$="duration"].duration-active {
   background: #f97316;
   animation: timerPulse 1.2s infinite;
+  
+
+}
+
+button[id$="duration"]
+{
+  border-radius: 8px;
+    font-size: 1rem;
+    height: 42px;
+    padding: 0 0.8rem;
+    border: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+
 }
