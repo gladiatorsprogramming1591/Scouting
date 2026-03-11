@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function ()
     [
         'autoFuel',
         'teleFuelAttempted',
-        'fuelPassed',
+        //'fuelPassed',
     ].forEach(setupCounter);
     
     form.addEventListener('submit', function (e) 
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function ()
         const teleShotAccuracy = document.getElementById("teleShotAccuracy").value;
         const defensiveSkill = document.getElementById("defensiveSkill").value;
         const teleFuelPickupLoc = document.getElementById("TELEOPFuelPickup").value;
-        const fuelPassed = document.getElementById("fuelPassed").value;
+        const fuelPassed = document.getElementById("fuelPassed").checked;
         const inactive = Array.from(
             document.querySelectorAll('input[name="inactive"]:checked')
         ).map(cb => cb.value);
