@@ -95,12 +95,19 @@ document.addEventListener("DOMContentLoaded", function ()
         // Save values we want to keep
         const scouterValue = document.getElementById('scouterInitial').value;
         const matchValue = document.getElementById('match-number').value;
+        const robotSelect = document.getElementById('robot-select').selectedIndex;
+        
 
         // Clear ALL inputs, selects, and textareas
         form.querySelectorAll("input, select, textarea").forEach(el => {
 
             // Skip the two protected fields
             if (el.id === "scouterInitial" || el.id === "match-number") {
+                return;
+            }
+            else if (el.id === 'robot-select')
+            {
+                el.selectedIndex = robotSelect;
                 return;
             }
 
@@ -110,6 +117,9 @@ document.addEventListener("DOMContentLoaded", function ()
             else if (el.type === "number") {
                 el.value = 0;
             } 
+            else if (el.tagName === "SELECT") {
+                el.selectedIndex = 0;
+            }
             else {
                 el.value = "";
             }
