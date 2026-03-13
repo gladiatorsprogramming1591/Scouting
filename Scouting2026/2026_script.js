@@ -4,6 +4,7 @@ const redoStack = [];
 let isRestoring = false; // prevents undo/redo from re-recording
 let pendingSnapshot = null;
 let commitTimer = null;
+let lastSnapshot;
 const COMMIT_DELAY = 400; // typing pause threshold (ms)
 let startHold;
 let fuelRateData = {};
@@ -21,7 +22,12 @@ fetch("fuelrates.json")
 function captureFormState(form) {
     const data = {};
 
+    const excluded = ["fuelRate"]; // fields that should NOT be undoable
+
     form.querySelectorAll("input, select, textarea").forEach(el => {
+
+        if (!el.id || excluded.includes(el.id)) return;
+
         if (el.type === "checkbox") {
             data[el.id] = el.checked;
         } else {
@@ -52,6 +58,17 @@ function restoreFormState(state) {
     isRestoring = false;
 }
 
+ function commitSnapshot () 
+    {
+        if (!pendingSnapshot) return;
+
+        undoStack.push({
+            from: pendingSnapshot,
+            to: lastSnapshot
+        });
+        pendingSnapshot = null;
+    }
+
 
 document.addEventListener("DOMContentLoaded", function ()
 {
@@ -64,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function ()
     const form = document.getElementById('data-form');
     const qrContainer = document.getElementById('qrcode');
 
-    let lastSnapshot = captureFormState(form);
+    lastSnapshot = captureFormState(form);
 
     // Reset button logic with confirmation
     const resetBtn = document.getElementById('reset-btn');
@@ -130,16 +147,7 @@ document.addEventListener("DOMContentLoaded", function ()
         lastSnapshot = current;
     };
 
-    function commitSnapshot () 
-    {
-        if (!pendingSnapshot) return;
-
-        undoStack.push({
-            from: pendingSnapshot,
-            to: lastSnapshot
-        });
-        pendingSnapshot = null;
-    }
+   
 
     form.addEventListener("input", queueSnapshot);
 
@@ -170,10 +178,17 @@ document.addEventListener("DOMContentLoaded", function ()
 
     teamInput.addEventListener("change", () => {
 
-        const team = teamInput.value.trim();
+    const team = teamInput.value.trim();
 
         if (fuelRateData[team] !== undefined) {
+
+            isRestoring = true; // prevent undo recording
+
             fuelRateInput.value = fuelRateData[team];
+
+            fuelRateInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+            isRestoring = false;
         }
     });
 
@@ -277,7 +292,7 @@ function setupCounter(id) {
     let timeout = null;
     let durationInterval = null;
 
-    const toggleDuration = () => {
+    /* const toggleDuration = () => {
 
         const fuelRateInput = document.getElementById("fuelRate");
         const rate = parseFloat(fuelRateInput.value) || 0;
@@ -310,6 +325,35 @@ function setupCounter(id) {
         overlay.style.background = "rgba(255,165,0,0.25)";
 
         durationBtn.classList.add("duration-active");
+    }; */
+
+    const startDuration = () => {
+
+        const fuelRateInput = document.getElementById("fuelRate");
+        const rate = parseFloat(fuelRateInput.value) || 0;
+
+        if (rate <= 0) return;
+
+        const intervalTime = 1000 / rate;
+
+        durationInterval = setInterval(() => {
+            updateValue(1);
+        }, intervalTime);
+
+        overlay.classList.add("active");
+        overlay.style.background = "rgba(255,165,0,0.25)";
+    };
+
+    const stopDuration = () => {
+
+        clearInterval(durationInterval);
+        durationInterval = null;
+
+        overlay.classList.remove("active");
+
+        if (pendingSnapshot) {
+            commitSnapshot();
+        }
     };
     const startHold = (delta,delay,color) => {
         // Apply once immediately
@@ -373,14 +417,26 @@ function setupCounter(id) {
 
     if (durationBtn) {
 
-        durationBtn.addEventListener("click", toggleDuration);
+        /* durationBtn.addEventListener("click", toggleDuration);
 
         durationBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
             startDuration();
         });
 
-        durationBtn.addEventListener("touchend", toggleDuration);
+        durationBtn.addEventListener("touchend", toggleDuration); */
+
+        durationBtn.addEventListener("mousedown", startDuration);
+        durationBtn.addEventListener("mouseup", stopDuration);
+        durationBtn.addEventListener("mouseleave", stopDuration);
+
+        durationBtn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            startDuration();
+        });
+
+        durationBtn.addEventListener("touchend", stopDuration);
+
     }
 
     bindHold(plusSlow, 1, 250, colorSlow);
