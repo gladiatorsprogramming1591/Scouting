@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function ()
 
         // Clear QR code display
         qrContainer.innerHTML = '';
+        document.getElementById("submission-history").innerHTML = '';
 
         // Commit this as one undoable action
         commitSnapshot();
@@ -209,9 +210,10 @@ document.addEventListener("DOMContentLoaded", function ()
         //'fuelPassed',
     ].forEach(setupCounter);
     
-    form.addEventListener('submit', function (e) 
+    document.querySelector("#submit-btn").onclick = function()
     {
-        e.preventDefault();
+        //e.preventDefault();
+        document.getElementById("submission-history").innerHTML = '';
         // Prematch data
         const scouterIni = document.getElementById('scouterInitial').value;
         const match = document.getElementById('match-number').value;
@@ -243,6 +245,29 @@ document.addEventListener("DOMContentLoaded", function ()
         const card = document.getElementById("card").value;
         const disable = document.getElementById("disable").value;
         const comments = document.getElementById('comments').value;
+
+        createSubmissionCard({
+            initials: scouterIni,
+            match: match,
+            robot: robot,
+            team: teamNum,
+            position: startingPos,
+            show: noShow,
+            move: moved,
+            autoFuel: autoFuelAttempted,
+            autoAcc: autoShotAccuracy,
+            autoPickup: autoFuelPickup,
+            autoClimb: autoClimbed,
+            teleFuel: teleFuelAttempted,
+            teleAccuracy: teleShotAccuracy,
+            inactiveActivity: inactive.join(","),
+            telePickup: teleFuelPickupLoc,
+            telePassed: fuelPassed,
+            teleClimb: climb,
+            card: card,
+            disable: disable,
+            comments: comments
+        });
 
         const qrData = 
         [
@@ -278,9 +303,7 @@ document.addEventListener("DOMContentLoaded", function ()
             height: 256,
             correctLevel: QRCode.CorrectLevel.L
         });
-    });
-    
-    
+    };
 });
 
 function setupCounter(id) {
@@ -301,41 +324,6 @@ function setupCounter(id) {
     let interval = null;
     let timeout = null;
     let durationInterval = null;
-
-    /* const toggleDuration = () => {
-
-        const fuelRateInput = document.getElementById("fuelRate");
-        const rate = parseFloat(fuelRateInput.value) || 0;
-
-        if (durationInterval) {
-
-            // STOP
-            clearInterval(durationInterval);
-            durationInterval = null;
-
-            overlay.classList.remove("active");
-            durationBtn.classList.remove("duration-active");
-
-            if (pendingSnapshot) {
-                commitSnapshot();
-            }
-
-            return;
-        }
-
-        if (rate <= 0) return;
-
-        const intervalTime = 1000 / rate;
-
-        durationInterval = setInterval(() => {
-            updateValue(1);
-        }, intervalTime);
-
-        overlay.classList.add("active");
-        overlay.style.background = "rgba(255,165,0,0.25)";
-
-        durationBtn.classList.add("duration-active");
-    }; */
 
     const startDuration = () => {
 
@@ -427,15 +415,6 @@ function setupCounter(id) {
 
     if (durationBtn) {
 
-        /* durationBtn.addEventListener("click", toggleDuration);
-
-        durationBtn.addEventListener("touchstart", (e) => {
-            e.preventDefault();
-            startDuration();
-        });
-
-        durationBtn.addEventListener("touchend", toggleDuration); */
-
         durationBtn.addEventListener("mousedown", startDuration);
         durationBtn.addEventListener("mouseup", stopDuration);
         durationBtn.addEventListener("mouseleave", stopDuration);
@@ -453,4 +432,41 @@ function setupCounter(id) {
     bindHold(minusSlow, -1, 250, colorSlow);
     bindHold(plusFast, 1, 125, colorFast);
     bindHold(plusExtraFast,1,75, colorExtraFast)
+}
+
+function createSubmissionCard(data) {
+    const container = document.getElementById("submission-history");
+
+    const card = document.createElement("div");
+    card.classList.add("submission-card");
+
+    card.innerHTML = `
+        <strong>Initial ${data.initials} | Match ${data.match} | Team ${data.team}</strong><br>
+        Robot: ${data.robot}<br>
+        <hr>
+        <strong>Auto</strong><br>
+        Starting Position: <span style="color: red;">${data.position}</span><br>
+        Not Show Up: <span style="color: red;">${data.show}</span><br>
+        Move In Auto: <span style="color: red;">${data.move}</span><br>
+        Auto Fuels Attempted: <span style="color: red;">${data.autoFuel}</span><br>
+        Auto Fuels Accuracy: <span style="color: red;">${data.autoAcc}</span><br>
+        Auto Fuels Pickup Location: <span style="color: red;">${data.autoPickup}</span><br>
+        Climb In Auto: <span style="color: red;">${data.autoClimb}</span><br>
+        <hr>
+        <strong>TeleOP</strong><br>
+        Tele Fuels Attempted: <span style="color: red;">${data.teleFuel}</span><br>
+        Tele Fuels Accuracy: <span style="color: red;">${data.teleAccuracy}</span><br>
+        Tele Fuels Pickup Location: <span style="color: red;">${data.telePickup}</span><br>
+        Inactive Activities: <span style="color: red;">${data.inactiveActivity}</span><br>
+        Tele Fuels Passed: <span style="color: red;">${data.telePassed}</span><br>
+        <hr>
+        <strong>Endgame</strong><br>
+        Climb In Endgame: <span style="color: red;">${data.climb}</span><br>
+        Receive Any Card: <span style="color: red;">${data.card}</span><br>
+        Having Troubles: <span style="color: red;">${data.disable}</span><br>
+        Comments: <span style="color: red;">${data.comments || "None"}</span><br>
+    `;
+
+    // Add newest on top
+    container.prepend(card);
 }

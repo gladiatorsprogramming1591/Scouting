@@ -115,16 +115,6 @@
             </div>
             <button type="button" id="teleFuelAttempted-duration">⏱</button>
             
-            <!-- <label for="fuelPassed">Fuel Passed Alliance's Area</label>
-            <div class="counterContainer">
-                <button type="button" id="fuelPassed-minusSlow">-</button>
-                <input type="number" id="fuelPassed" value="0" min="0" readonly />
-                <button type="button" id="fuelPassed-plusSlow">+</button>
-                <button type="button" id="fuelPassed-plusFast">++</button>
-                <button type="button" id="fuelPassed-plusExtraFast">+++</button>
-                
-            </div>
-            <button type="button" id="fuelPassed-duration">⏱</button> -->
 
             <label for="fuelPassed">Passing fuels from neutral zone to alliance area?</label>
             <div class="toggle-container">
@@ -219,8 +209,9 @@
 
             
             <button type="button" id="reset-btn">Reset</button>
-            <button type="submit">Generate QR</button>
+            <button type="button" id="submit-btn">Generate QR</button>
         </form>
+        <div id="submission-history"></div>
         <div id="qrcode"></div>
         <div class="undo-redo-container">
             <button id="undo-btn" class="history-btn undo">
