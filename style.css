@@ -1,115 +1,219 @@
-body {
+
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 2rem;
-  }
-  
-  .container {
-    max-width: 500px;
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    margin: 0 auto;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-  
-  form {
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navbar {
     display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  
-  select, input[type="checkbox"] {
-    margin-top: 0.5rem;
-  }
-  
-  button {
-    margin-top: 1.5rem;
-    padding: 0.5rem;
-    background: #007bff;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 8%;
+    background-color: #222;
+}
+
+.logo {
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  #qrcode {
-    margin-top: 2rem;
-    text-align: center;
-  }
-  
-  .counterContainer{
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links {
     display: flex;
-    align-items: center;
+    gap: 30px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #66ccff;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 550px;
+
+    display: flex;
     justify-content: center;
-    margin-top: 1rem;
-  }
-
-  .counterContainer button{
-    padding: 0.5rem 1rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-    height: 40px;
-    display: flex;
     align-items: center;
-    margin-top : -0.05rem;
-  }
 
-  .counterContainer input{
-    width: 50px;
     text-align: center;
-    font-size: 1.2rem;
-    margin: 0 10px;
-    padding: 5px;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid
-  }
+    padding: 60px 20px;
 
-  .toggle-container{
+    background: linear-gradient(
+        135deg,
+        #1e3c72,
+        #2a5298
+    );
+
+    color: white;
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.subtitle {
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    color: #b9ddff;
+}
+
+.hero h1 {
+    font-size: 52px;
+    margin-bottom: 25px;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+    color: #e0eaff;
+}
+
+/* Buttons */
+.hero-buttons {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-top: 1rem;
-  }
+    gap: 20px;
+}
 
-  .toggle-checkbox
-  {
-    display:none;
-  }
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
 
-  .toggle-label
-  {
-    width: 50px;
-    height: 25px;
-    background-color: #ccc;
-    border-radius: 25px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
 
-  .toggle-label::before {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.btn-primary {
     background-color: white;
-    top: 3px;
-    left: 3px;
-    transition: transform 0.3s ease; 
-  }
+    color: #1e3c72;
+}
 
-  .toggle-checkbox:checked +.toggle-label{
-    background-color: #4caf50;
-  }
+.btn-primary:hover {
+    background-color: #ddd;
+    transform: translateY(-3px);
+}
 
-  .toggle-checkbox:checked + .toggle-label::before {
-    transform: translateX(25px);
-  }
-  
+.btn-secondary {
+    border: 2px solid white;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: white;
+    color: #1e3c72;
+    transform: translateY(-3px);
+}
+
+/* Features Section */
+.features {
+    padding: 70px 8%;
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.feature-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.feature-card {
+    flex: 1;
+    max-width: 350px;
+
+    padding: 30px;
+    background-color: white;
+
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.feature-card a {
+    color: #2a5298;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-card {
+        width: 100%;
+    }
+}
