@@ -22,7 +22,16 @@ body {
     background-color: #222;
 }
 
+.navbar img{
+    max-width: 100px;
+    max-height: 100px;
+}
+
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
     color: white;
     font-size: 24px;
     font-weight: bold;
@@ -216,4 +225,5 @@ footer {
     .feature-card {
         width: 100%;
     }
+    
 }
