@@ -1,0 +1,50 @@
+# ==========================================
+# VS Code / Editor Settings
+# ==========================================
+
+# Visual Studio (including the .vs directory)
+.vs/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.userosscache
+*.sln.docstates
+
+
+.vscode/*
+.vs/
+.vs
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+*.code-workspace
+.history/
+
+# ==========================================
+# CSS Preprocessors / Build Tools (Optional)
+# ==========================================
+# Ignore map files if using Sass/Less but you don't want to track them
+*.sass.map
+*.scss.map
+*.css.map
+
+# If you use Live Server or package managers later
+node_modules/
+.DS_Store
+
+# ==========================================
+# Operating System Junk
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
